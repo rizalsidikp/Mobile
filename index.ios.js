@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
 import App from './app';
 
-AppRegistry.registerComponent('RefactoryMobile', () => App);
+AppRegistry.registerComponent('Mobile', () => App);
