@@ -13,13 +13,30 @@ var styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     flex: 1,
   },
-  item: {
+  itemPolice: {
     margin: 3,
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'space-between',
     height:deviceHeight/5,
-    backgroundColor: 'blue'
+    backgroundColor: '#1565C0',
+    paddingTop: 40,
+    paddingBottom: 25,
   },
+  itemHospital: {
+    margin: 3,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height:deviceHeight/5,
+    backgroundColor: '#FFEBEE',
+    paddingTop: 40,
+    paddingBottom: 25,
+  },
+  text: {
+    color: 'white',
+    alignItems: 'center',
+    fontSize: 20,
+
+  }
 })
 
 module.exports = styles

@@ -13,8 +13,10 @@ const {
     StyleSheet,
     View,
     TouchableHighlight,
+    TouchableOpacity,
     Alert,
-    Dimensions
+    Dimensions,
+    AppRegistry
 } = ReactNative;
 
 const deviceWidth = Dimensions.get('window').width;
@@ -27,16 +29,39 @@ const firebaseConfig = {
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-class App extends React.Component {
-    // Initialize Firebase
+
+import { StackNavigator } from 'react-navigation'
+
+import Report from './report'
+
+
+class HomeScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Welcome',
+      };
+
+  /**
+   * Creates an instance of App.
+   * Initialize Firebase
+   * Row Data for list view
+   * @param {any} props 
+   * @memberof App
+   */
     constructor(props) {
         super(props);
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
-            })
+            }),
+            avatarSource: null,
+            name: null,
+            data: null,
+            type: null,
+            path: null,
+            latitude: null,
+            longitude: null,
         };
-        this.itemsRef = this.getRef().child('menu');
+        this.itemsRef = this.getRef().child('departments');
     }
     getRef() {
         return firebaseApp.database().ref();
@@ -57,7 +82,7 @@ class App extends React.Component {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(items)
             });
-
+         
         });
     }
 
@@ -66,7 +91,16 @@ class App extends React.Component {
         this.listenForItems(this.itemsRef);
     }
 
+
+    /**
+     * Get data from firebase server
+     * ListView Render
+     * @returns 
+     * @memberof App
+     */
     render() {
+        
+
         return (
             <View style={styles.container}>
                 <ListView
@@ -77,41 +111,25 @@ class App extends React.Component {
         )
     }
 
-    _addItem() {
-        Alert.alert(
-            'Alert Title',
-            'My Alert Msg',
-            [
-                { text: 'Ask me later', onPress: () => console.log('Ask me later pressed') },
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                {
-                    text: 'OK', onPress: () => {
-                        this.itemsRef.push({ title: "text" })
-                    }
-                },
-            ],
-            { cancelable: false }
-        );
-    }
 
     _renderItem(item) {
-        const onPress = () => {
-            Alert.alert(
-                'Complete',
-                null,
-                [
-                    { text: 'Complete', onPress: (text) => this.itemsRef.child(item._key).remove() },
-                    { text: 'Cancel', onPress: (text) => console.log('Cancelled') }
-                ]
-            );
-        };
-
+        const { navigate } = this.props.navigation;
         return (
-            <View style={styles.item}>
-                <Text style={styles.text}>{item.title}</Text>
-            </View>
+            <TouchableOpacity
+              onPress={() => navigate('Report', { department: item.title })}
+            >
+              <View style={styles.itemPolice}>
+                  <Text style={styles.text}>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
         );
     }
 }
 
-export default App;
+
+const App = StackNavigator({
+    Home: { screen: HomeScreen },
+    Report: { screen: Report }
+  });
+  
+AppRegistry.registerComponent('Mobile', () => App);

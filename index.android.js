@@ -1,4 +1,1 @@
-import { AppRegistry } from 'react-native';
-import App from './app';
-
-AppRegistry.registerComponent('Mobile', () => App);
+import App from './app/index';
